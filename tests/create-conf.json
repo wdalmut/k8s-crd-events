@@ -1,0 +1,20 @@
+{
+  "apiVersion": "app.corley.it/v1",
+  "kind": "Conference",
+  "metadata": {
+    "annotations": {
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"app.corley.it/v1\",\"kind\":\"Conference\",\"metadata\":{\"annotations\":{},\"name\":\"cloudconf2020\"},\"spec\":{\"description\":\"The biggest CloudComputing event in Europe!\",\"on_day\":\"2020-03-19\",\"title\":\"CloudConf 2020\"}}\n"
+    },
+    "creationTimestamp": "2019-12-22T18:02:20Z",
+    "generation": 1,
+    "name": "cloudconf2020",
+    "resourceVersion": "16852",
+    "selfLink": "/apis/app.corley.it/v1/conferences/cloudconf2020",
+    "uid": "df890920-7703-40d9-8cca-59bcd86f642f"
+  },
+  "spec": {
+    "description": "The biggest CloudComputing event in Europe!",
+    "on_day": "2020-03-19",
+    "title": "CloudConf 2020"
+  }
+}

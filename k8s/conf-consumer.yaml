@@ -1,29 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conf-informer
+  name: conf-consumer
   namespace: kconference
 spec:
   selector:
     matchLabels:
-      app: conf-informer
+      app: conf-consumer
   replicas: 1
   template:
     metadata:
       labels:
-        app: conf-informer
+        app: conf-consumer
     spec:
       terminationGracePeriodSeconds: 0
-      serviceAccountName: conf-informer-service-account
+      serviceAccountName: conf-consumer-service-account
       containers:
-      - name: conf-informer
-        image: wdalmut/conf-informer
+      - name: conf-consumer
+        image: wdalmut/conf-consumer
         env:
           - name: REDIS_HOST
             value: "queue-service"
           - name: ADD_QUEUE_NAME
             value: 'add-conf'
-          - name: UPDATE_QUEUE_NAME
-            value: 'update-conf'
-          - name: DELETE_QUEUE_NAME
-            value: 'delete-conf'
+          - name: ADD_PROCESSING_QUEUE_NAME
+            value: 'processing-add-conf'
+

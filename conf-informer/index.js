@@ -13,12 +13,12 @@ const informer = k8s.makeInformer(kc, '/apis/app.corley.it/v1/conferences', () =
 })
 
 informer.on('add', obj => console.log(`Added conference ${obj.metadata.name}`))
-informer.on('add', obj => client.lpush('add-conf', JSON.stringify(obj), redis.print))
+informer.on('add', obj => client.lpush(process.env.ADD_QUEUE_NAME, JSON.stringify(obj), redis.print))
 
 informer.on('update', obj => console.log(`Added conference ${obj.metadata.name}`))
-informer.on('update', obj => client.lpush('update-conf', JSON.stringify(obj), redis.print))
+informer.on('update', obj => client.lpush(process.env.UPDATE_QUEUE_NAME, JSON.stringify(obj), redis.print))
 
 informer.on('delete', obj => console.log(`Added conference ${obj.metadata.name}`))
-informer.on('delete', obj => client.lpush('delete-conf', JSON.stringify(obj), redis.print))
+informer.on('delete', obj => client.lpush(process.env.DELETE_QUEUE_NAME, JSON.stringify(obj), redis.print))
 
 informer.start()

@@ -8,6 +8,10 @@ build:
     context: conf-informer
     docker:
       dockerfile: Dockerfile
+  - image: wdalmut/conf-consumer
+    context: conf-consumer
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
