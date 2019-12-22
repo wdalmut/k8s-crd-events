@@ -31,6 +31,10 @@ spec:
         type: string
         description: The conference title
         jsonPath: .spec.title
+      - name: On Day
+        type: string
+        description: The conference date
+        jsonPath: .spec.on_day
   # either Namespaced or Cluster
   scope: Cluster
   names:
