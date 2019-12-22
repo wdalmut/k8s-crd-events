@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conf-informer
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: conf-informer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: conf-informer
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: conf-informer-service-account
+      containers:
+      - name: conf-informer
+        image: wdalmut/conf-informer
+        env:
+          - name: REDIS_HOST
+            value: "queue-service"

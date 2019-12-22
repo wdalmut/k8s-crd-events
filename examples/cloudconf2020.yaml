@@ -1,0 +1,8 @@
+apiVersion: "app.corley.it/v1"
+kind: Conference
+metadata:
+  name: cloudconf2020
+spec:
+  title: "CloudConf 2020"
+  description: "The biggest CloudComputing event in Europe!"
+  on_day: "2020-03-19"
