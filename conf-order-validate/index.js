@@ -1,6 +1,12 @@
 const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
+const k8s = require('@kubernetes/client-node');
+
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+
+const k8sApi = kc.makeApiClient(k8s.CustomObjectsApi);
 
 var https = require('https');
 
@@ -17,22 +23,65 @@ app.use(bodyParser.json())
 const port = process.env.NODE_PORT || 3000
 
 app.post('/', (req, res) => {
-  console.log(JSON.stringify(req.body))
+  let request = req.body.request
+  let object = req.body.request.object
 
-  let uid = req.body.request.uid
+  let uid = request.uid
+  let planRef = object.spec.planRef
+  let couponRef = object.spec.couponRef
 
-  return res.json({
-    "apiVersion": "admission.k8s.io/v1",
-    "kind": "AdmissionReview",
-    "response": {
-      "uid": uid,
-      "allowed": false,
-      "status": {
-        "code": 400,
-        "message": "We are not ready to accept those orders!"
+  k8sApi.getNamespacedCustomObject(request.kind.group, 'v1', object.metadata.namespace, 'plans', planRef)
+    .then(plan => {
+      if (couponRef) {
+        return k8sApi.getNamespacedCustomObject(request.kind.group, 'v1', object.metadata.namespace, 'coupons', couponRef)
+          .then(coupon => {
+            let final_price = plan.body.spec.price - coupon.body.spec.price
+            if (object.spec.price == final_price*object.spec.quantity) {
+              return plan
+            }
+
+            return Promise.reject({ body: { message: `Your price is not well suited with the plan and coupon! It should be: ${final_price}` } })
+          })
       }
-    }
-  })
+
+      return Promise.resolve(plan)
+    })
+    .then(_ => {
+      if (object.spec.price < 0) {
+        return Promise.reject({ body: { message: "Order price can not be negative..." } })
+      }
+
+      return Promise.resolve(_)
+    })
+    .then(_ => {
+      console.log(`Allow create ${request.name}`)
+
+      return res.json({
+        "apiVersion": "admission.k8s.io/v1",
+        "kind": "AdmissionReview",
+        "response": {
+          "uid": uid,
+          "allowed": true,
+        }
+      })
+    })
+    .catch(err => {
+      console.log(`Deny create ${request.name}`)
+
+      return res.json({
+        "apiVersion": "admission.k8s.io/v1",
+        "kind": "AdmissionReview",
+        "response": {
+          "uid": uid,
+          "allowed": false,
+          "status": {
+            "code": 400,
+            "message": `Your order is not valid: ${err.body.message}`
+          }
+        }
+      })
+    })
+
 })
 
 const httpsServer = https.createServer(credentials, app);
