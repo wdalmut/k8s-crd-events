@@ -1,0 +1,9 @@
+apiVersion: "app.corley.it/v1"
+kind: Coupon
+metadata:
+  name: discount-10
+  namespace: cloudconf2020
+spec:
+  price: 10.00
+
+

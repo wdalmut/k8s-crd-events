@@ -1,0 +1,11 @@
+apiVersion: "app.corley.it/v1"
+kind: Order
+metadata:
+  name: order-1
+  namespace: cloudconf2020
+spec:
+  planRef: super-early-bird
+  price: 29.90
+  date: "2019-01-01T08:00:00Z"
+  quantity: 1
+  status: 'PENDING'
