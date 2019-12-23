@@ -31,8 +31,9 @@ const create_namespace = ({key, id}) => {
     data = data.spec
 
     create_namespace({"key": key, "id": id})
+      .then(() => console.log(`Setup completed for event: ${id}`))
+      .catch(err => console.error(err))
       .finally(() => {
-        console.log(`Setup completed for event: ${id}`)
         return setImmediate(() => get_from_queue(client))
       })
   })
