@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conf-order-validate
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: conf-order-validate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: conf-order-validate
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: conf-order-validate-service-account
+      containers:
+      - name: conf-order-validate
+        image: wdalmut/conf-order-validate
+
+

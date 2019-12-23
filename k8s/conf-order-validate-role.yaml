@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: conf-order-validate-role
+  namespace: kconference
+rules:
+- apiGroups:
+  - "app.corley.it"
+  resources:
+  - "orders"
+  verbs:
+  - "*"
+
+

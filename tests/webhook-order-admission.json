@@ -1,0 +1,64 @@
+{
+  "kind": "AdmissionReview",
+  "apiVersion": "admission.k8s.io/v1",
+  "request": {
+    "uid": "dea1dae7-e231-4404-b047-2f987d3612bb",
+    "kind": {
+      "group": "app.corley.it",
+      "version": "v1",
+      "kind": "Order"
+    },
+    "resource": {
+      "group": "app.corley.it",
+      "version": "v1",
+      "resource": "orders"
+    },
+    "requestKind": {
+      "group": "app.corley.it",
+      "version": "v1",
+      "kind": "Order"
+    },
+    "requestResource": {
+      "group": "app.corley.it",
+      "version": "v1",
+      "resource": "orders"
+    },
+    "name": "order-1",
+    "namespace": "cloudconf2020",
+    "operation": "CREATE",
+    "userInfo": {
+      "username": "kubernetes-admin",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ]
+    },
+    "object": {
+      "apiVersion": "app.corley.it/v1",
+      "kind": "Order",
+      "metadata": {
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"app.corley.it/v1\",\"kind\":\"Order\",\"metadata\":{\"annotations\":{},\"name\":\"order-1\",\"namespace\":\"cloudconf2020\"},\"spec\":{\"date\":\"2019-01-01T08:00:00Z\",\"planRef\":\"super-early-bird\",\"price\":29.9,\"quantity\":1,\"status\":\"PENDING\"}}\n"
+        },
+        "creationTimestamp": "2019-12-23T20:42:08Z",
+        "generation": 1,
+        "name": "order-1",
+        "namespace": "cloudconf2020",
+        "uid": "c52c32d6-46c5-46ca-b0b7-777a73fb9262"
+      },
+      "spec": {
+        "date": "2019-01-01T08:00:00Z",
+        "planRef": "super-early-bird",
+        "price": 29.9,
+        "quantity": 1,
+        "status": "PENDING"
+      }
+    },
+    "oldObject": null,
+    "dryRun": false,
+    "options": {
+      "kind": "CreateOptions",
+      "apiVersion": "meta.k8s.io/v1"
+    }
+  }
+}

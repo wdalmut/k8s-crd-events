@@ -12,6 +12,10 @@ build:
     context: conf-consumer
     docker:
       dockerfile: Dockerfile
+  - image: wdalmut/conf-order-validate
+    context: conf-order-validate
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
