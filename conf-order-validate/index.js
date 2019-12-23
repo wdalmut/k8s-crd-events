@@ -20,8 +20,6 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const port = process.env.NODE_PORT || 3000
-
 app.post('/', (req, res) => {
   let request = req.body.request
   let object = req.body.request.object
