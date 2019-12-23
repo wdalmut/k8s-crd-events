@@ -1,0 +1,11 @@
+apiVersion: "app.corley.it/v1"
+kind: Plan
+metadata:
+  name: super-early-bird
+  namespace: cloudconf2020
+spec:
+  title: "Super Early Bird Ticket"
+  description: "Access to the conference, includes coffee break and gadgets!"
+  price: 29.90
+  active: true
+

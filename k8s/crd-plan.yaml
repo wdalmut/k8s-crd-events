@@ -1,0 +1,57 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  # name must match the spec fields below, and be in the form: <plural>.<group>
+  name: plans.app.corley.it
+spec:
+  # group name to use for REST API: /apis/<group>/<version>
+  group: app.corley.it
+  # list of versions supported by this CustomResourceDefinition
+  versions:
+    - name: v1
+      # Each version can be enabled/disabled by Served flag.
+      served: true
+      # One and only one version must be marked as the storage version.
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                active:
+                  type: boolean
+
+      additionalPrinterColumns:
+      - name: Title
+        type: string
+        description: The conference title
+        jsonPath: .spec.title
+      - name: Active
+        type: boolean
+        description: The plan is currently active
+        jsonPath: .spec.active
+      - name: Price
+        type: number
+        description: The plan price
+        jsonPath: .spec.price
+  # either Namespaced or Cluster
+  scope: Namespaced
+  names:
+    # plural name to be used in the URL: /apis/<group>/<version>/<plural>
+    plural: plans
+    # singular name to be used as an alias on the CLI and for display
+    singular: plan
+    # kind is normally the CamelCased singular type. Your resource manifests use this.
+    kind: Plan
+    # shortNames allow shorter string to match your resource on the CLI
+    shortNames:
+    - pl
+

@@ -5,10 +5,16 @@ bluebird.promisifyAll(redis);
 
 const client = redis.createClient({ host: process.env.REDIS_HOST })
 
-const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
+const kc = new k8s.KubeConfig()
+kc.loadFromDefault()
 
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api)
+
+const create_namespace = ({key, id}) => {
+  return k8sApi.readNamespace(id)
+    .catch(namespace => k8sApi.createNamespace({ metadata: { name: id } }))
+    .then(_ => client.lremAsync(process.env.ADD_PROCESSING_QUEUE_NAME, 0, key))
+}
 
 ;(function get_from_queue(client) {
   client.brpoplpush(process.env.ADD_QUEUE_NAME, process.env.ADD_PROCESSING_QUEUE_NAME, 0, (err, data) => {
@@ -24,12 +30,9 @@ const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     let id = data.metadata.name
     data = data.spec
 
-    console.log(`create a new namespace for event: ${id}`)
-
-    k8sApi.readNamespace(id)
-      .catch(namespace => k8sApi.createNamespace({ metadata: { name: id } }))
-      .then(_ => client.lremAsync(process.env.ADD_PROCESSING_QUEUE_NAME, 0, key))
+    create_namespace({"key": key, "id": id})
       .finally(() => {
+        console.log(`Setup completed for event: ${id}`)
         return setImmediate(() => get_from_queue(client))
       })
   })
