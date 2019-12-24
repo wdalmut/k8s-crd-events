@@ -8,4 +8,3 @@ spec:
   price: 29.90
   date: "2019-01-01T08:00:00Z"
   quantity: 1
-  status: 'PENDING'

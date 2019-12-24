@@ -13,6 +13,13 @@ spec:
       served: true
       # One and only one version must be marked as the storage version.
       storage: true
+      subresources:
+        # status enables the status subresource.
+        status:
+          payment: .status.payment
+        scale:
+          specReplicasPath: .spec.quantity
+          statusReplicasPath: .status.quantity
       schema:
         openAPIV3Schema:
           type: object
@@ -32,10 +39,16 @@ spec:
                 quantity:
                   type: integer
                   default: 1
-                status:
+            status:
+              type: object
+              properties:
+                payment:
                   type: string
                   default: 'PENDING'
                   pattern: '^(PENDING|CONFIRMED|REJECTED)$'
+                quantity:
+                  type: integer
+                  default: 0
       additionalPrinterColumns:
       - name: plan
         type: string
@@ -48,7 +61,15 @@ spec:
       - name: status
         type: string
         description: The order status
-        jsonPath: .spec.status
+        jsonPath: .status.payment
+      - name: current
+        type: integer
+        description: The desired ticket quantity
+        jsonPath: .status.quantity
+      - name: desired
+        type: integer
+        description: The desired ticket quantity
+        jsonPath: .spec.quantity
       - name: price
         type: number
         description: The order total price
