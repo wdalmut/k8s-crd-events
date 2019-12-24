@@ -24,6 +24,10 @@ build:
     context: order-consumer
     docker:
       dockerfile: Dockerfile
+  - image: wdalmut/conf-order-consumer-upd
+    context: order-consumer-upd
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:

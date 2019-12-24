@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-consumer-upd
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: order-consumer-upd
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-consumer-upd
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: order-consumer-service-account
+      containers:
+      - name: order-consumer-upd
+        image: wdalmut/conf-order-consumer-upd
+        env:
+          - name: REDIS_HOST
+            value: "queue-service"
+          - name: UPDATE_QUEUE_NAME
+            value: 'update-order'
+          - name: UPDATE_PROCESSING_QUEUE_NAME
+            value: 'processing-update-order'
+
+
+

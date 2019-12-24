@@ -9,6 +9,14 @@ application deploy.
 
 ## Getting started
 
+Create the cluster
+
+```sh
+kind create cluster --config kind.yaml
+```
+
+Start development
+
 ```sh
 skaffold dev
 ```
