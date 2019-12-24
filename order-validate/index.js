@@ -30,6 +30,13 @@ app.post('/', (req, res) => {
 
   k8sApi.getNamespacedCustomObject(request.kind.group, 'v1', object.metadata.namespace, 'plans', planRef)
     .then(plan => {
+      if (!plan.body.spec.active) {
+        return Promise.reject({ body: { message: `This plan '${plan.body.spec.name}' is not active!` } })
+      }
+
+      return plan
+    })
+    .then(plan => {
       if (couponRef) {
         return k8sApi.getNamespacedCustomObject(request.kind.group, 'v1', object.metadata.namespace, 'coupons', couponRef)
           .then(coupon => {
