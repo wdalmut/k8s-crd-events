@@ -1,8 +1,10 @@
 apiVersion: "app.corley.it/v1"
 kind: Ticket
 metadata:
-  name: ticket-8153641
+  name: order-1-8153641
   namespace: cloudconf2020
+  labels:
+    orders.app.corley.it: order-1
 spec:
   orderRef: order-1
 
