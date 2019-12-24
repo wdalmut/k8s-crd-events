@@ -50,6 +50,31 @@ const create_ticket = ({name, namespace}, {labelSelector}) => {
   )
 }
 
+const list_tickets_per_order = ({ name, namespace }) => {
+  return k8sApi.listNamespacedCustomObject(
+    "app.corley.it",
+    "v1",
+    namespace,
+    "tickets",
+    undefined,
+    undefined,
+    {
+      "orders.app.corley.it": name
+    }
+  )
+}
+
+const delete_ticket = ({ name, namespace }, ticket_name) => {
+  return k8sApi.deleteNamespacedCustomObject(
+    "app.corley.it",
+    "v1",
+    namespace,
+    "tickets",
+    ticket_name,
+    {}
+  )
+}
+
 ;(function get_from_queue(client) {
   client.brpoplpush(process.env.UPDATE_QUEUE_NAME, process.env.UPDATE_PROCESSING_QUEUE_NAME, 0, (err, data) => {
     if (err) {
@@ -69,17 +94,34 @@ const create_ticket = ({name, namespace}, {labelSelector}) => {
 
     data = data.spec
 
-    Promise.resolve(null)
-      .then(() => {
-        if (status.payment === 'CONFIRMED') {
-          // create tickets
-          return Promise.all(Array.apply(null, new Array(data.quantity)).map(_ => create_ticket(metadata, status)))
+    list_tickets_per_order(metadata)
+      .then(tickets => tickets.body.items)
+      .then((available_tickets) => {
+        let quantity = data.quantity - available_tickets.length
+
+        if (status.payment === 'CONFIRMED' && quantity === 0) {
+          return Promise
+            .resolve([])
+            .then(_ => data.quantity)
+        } else if (status.payment === 'CONFIRMED' && quantity > 0) {
+          return Promise
+            .all(Array.apply(null, new Array(quantity)).map(_ => create_ticket(metadata, status)))
+            .then(_ => data.quantity)
+        } else if (status.payment === 'CONFIRMED' && quantity < 0) {
+          let tickets = available_tickets.slice(quantity).map(ticket => ticket.metadata.name)
+
+          return Promise
+            .all(tickets.map(name => delete_ticket(metadata, name)))
+            .then(_ => data.quantity)
         } else {
-          // delete tickets
-          return []
+          let tickets = available_tickets.map(ticket => ticket.metadata.name)
+
+          return Promise
+            .all(tickets.map(name => delete_ticket(metadata, name)))
+            .then(_ => 0)
         }
       })
-      .then(quantity => patch_quantity(metadata, quantity.length))
+      .then(quantity => patch_quantity(metadata, quantity))
       .then(_ => client.lremAsync(process.env.UPDATE_PROCESSING_QUEUE_NAME, 0, key))
       .then(() => console.log(`Setup completed for order: ${id}`))
       .catch(err => console.error(err))
