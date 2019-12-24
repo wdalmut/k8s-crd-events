@@ -13,11 +13,15 @@ build:
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-validate
-    context: conf-order-validate
+    context: order-validate
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-informer
     context: order-informer
+    docker:
+      dockerfile: Dockerfile
+  - image: wdalmut/conf-order-consumer
+    context: order-consumer
     docker:
       dockerfile: Dockerfile
 deploy:
