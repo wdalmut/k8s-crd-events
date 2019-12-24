@@ -19,13 +19,10 @@ spec:
           properties:
             spec:
               type: object
-              required: ["orderRef", "code"]
+              required: ["orderRef"]
               properties:
                 orderRef:
                   type: string
-                code:
-                  type: string
-                  pattern: '^[0-9]{7}$'
                 attendee:
                   type: object
                   required: ["firstname", "lastname"]
@@ -41,10 +38,14 @@ spec:
         type: string
         description: The current source order
         jsonPath: .spec.orderRef
-      - name: code
+      - name: firstname
         type: string
-        description: The current ticket code
-        jsonPath: .spec.code
+        description: The current ticket attendee fistname
+        jsonPath: .spec.attendee.firstname
+      - name: lastname
+        type: string
+        description: The current ticket attendee lastname
+        jsonPath: .spec.attendee.lastname
   # either Namespaced or Cluster
   scope: Namespaced
   names:

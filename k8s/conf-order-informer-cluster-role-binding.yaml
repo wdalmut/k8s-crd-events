@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: role-conf-order-informer-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: role-conf-order-informer
+subjects:
+  - kind: ServiceAccount
+    name: conf-order-informer-service-account
+    namespace: kconference
+
+

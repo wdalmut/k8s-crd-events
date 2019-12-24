@@ -16,6 +16,10 @@ build:
     context: conf-order-validate
     docker:
       dockerfile: Dockerfile
+  - image: wdalmut/conf-order-informer
+    context: order-informer
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
