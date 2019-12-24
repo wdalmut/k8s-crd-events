@@ -54,7 +54,7 @@ spec:
         description: The order total price
         jsonPath: .spec.price
       - name: date
-        type: string
+        type: date
         description: The order purchase date
         jsonPath: .spec.date
   # either Namespaced or Cluster
