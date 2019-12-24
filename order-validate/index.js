@@ -34,7 +34,7 @@ app.post('/', (req, res) => {
         return k8sApi.getNamespacedCustomObject(request.kind.group, 'v1', object.metadata.namespace, 'coupons', couponRef)
           .then(coupon => {
             let final_price = plan.body.spec.price - coupon.body.spec.price
-            if (object.spec.price == final_price*object.spec.quantity) {
+            if (object.spec.price == final_price) {
               return plan
             }
 
