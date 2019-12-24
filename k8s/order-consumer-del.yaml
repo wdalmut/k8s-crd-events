@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-consumer-del
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: order-consumer-del
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-consumer-del
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: order-consumer-service-account
+      containers:
+      - name: order-consumer-del
+        image: wdalmut/conf-order-consumer-del
+        env:
+          - name: REDIS_HOST
+            value: "queue-service"
+          - name: DELETE_QUEUE_NAME
+            value: 'delete-order'
+          - name: DELETE_PROCESSING_QUEUE_NAME
+            value: 'processing-delete-order'
+
+
+
