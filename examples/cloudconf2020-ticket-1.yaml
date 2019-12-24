@@ -1,0 +1,9 @@
+apiVersion: "app.corley.it/v1"
+kind: Ticket
+metadata:
+  name: ticket-1
+  namespace: cloudconf2020
+spec:
+  orderRef: order-1
+  code: "8153641"
+

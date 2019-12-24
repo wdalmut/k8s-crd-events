@@ -1,0 +1,13 @@
+apiVersion: "app.corley.it/v1"
+kind: Ticket
+metadata:
+  name: ticket-2
+  namespace: cloudconf2020
+spec:
+  orderRef: order-2
+  code: "8153642"
+  attendee:
+    firstname: Walter
+    lastname: Dal Mut
+
+
