@@ -20,6 +20,7 @@ spec:
         scale:
           specReplicasPath: .spec.quantity
           statusReplicasPath: .status.quantity
+          labelSelectorPath: .status.labelSelector
       schema:
         openAPIV3Schema:
           type: object
@@ -49,6 +50,8 @@ spec:
                 quantity:
                   type: integer
                   default: 0
+                labelSelector:
+                  type: string
       additionalPrinterColumns:
       - name: plan
         type: string
