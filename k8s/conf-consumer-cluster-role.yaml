@@ -7,8 +7,38 @@ rules:
   - ""
   resources:
   - "namespaces"
+  - "services"
   verbs:
   - "get"
   - "list"
   - "create"
-
+- apiGroups:
+  - "apps"
+  resources:
+  - "deployments"
+  verbs:
+  - "create"
+- apiGroups:
+  - ""
+  resources:
+  - "serviceaccounts"
+  verbs:
+  - "create"
+- apiGroups:
+  - "rbac.authorization.k8s.io"
+  resources:
+  - "roles"
+  verbs:
+  - "*"
+- apiGroups:
+  - "rbac.authorization.k8s.io"
+  resources:
+  - "rolebindings"
+  verbs:
+  - "create"
+- apiGroups:
+  - "networking.k8s.io"
+  resources:
+  - "ingresses"
+  verbs:
+  - "create"

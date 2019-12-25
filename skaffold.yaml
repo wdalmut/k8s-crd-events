@@ -32,8 +32,12 @@ build:
     context: src/order-consumer-del
     docker:
       dockerfile: Dockerfile
+  - image: wdalmut/conf-payment-gateway-paypal
+    context: src/payment-gateway-paypal
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
-      - ./k8s/namespace.yaml
-      - ./k8s/*
+    - ./k8s/namespace.yaml
+    - ./k8s/*

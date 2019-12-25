@@ -176,3 +176,29 @@ order-1-9476971   order-1
 order-1-9926811   order-1
 ```
 
+## Pay for a ticket
+
+Just receive the payment event (POST call on the payment gateway)
+
+```sh
+curl -XPOST -d 'custom=order-1&payment_status=Completed&mc_gross=29.90&mc_currency=EUR' http://localhost/payment-gateway/cloudconf2020
+```
+
+If you check the order event list now you will see the payment confirmation
+event and then the tickets will be created.
+
+### Expose nginx ingress (for KinD)
+
+Deploy nginx ingress
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+```
+
+Then expose the service with socat
+
+```sh
+make dev
+```
+
