@@ -5,31 +5,31 @@ metadata:
 build:
   artifacts:
   - image: wdalmut/conf-informer
-    context: conf-informer
+    context: src/conf-informer
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-consumer
-    context: conf-consumer
+    context: src/conf-consumer
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-validate
-    context: order-validate
+    context: src/order-validate
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-informer
-    context: order-informer
+    context: src/order-informer
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-consumer
-    context: order-consumer
+    context: src/order-consumer
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-consumer-upd
-    context: order-consumer-upd
+    context: src/order-consumer-upd
     docker:
       dockerfile: Dockerfile
   - image: wdalmut/conf-order-consumer-del
-    context: order-consumer-del
+    context: src/order-consumer-del
     docker:
       dockerfile: Dockerfile
 deploy:
