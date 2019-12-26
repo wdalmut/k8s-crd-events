@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: conference-object-counts
+  namespace: cloudconf2020
+spec:
+  hard:
+    "count/orders.app.corley.it": "10"
+    "count/tickets.app.corley.it": "10"
+    "count/plans.app.corley.it": "3"
+    "count/coupons.app.corley.it": "5"

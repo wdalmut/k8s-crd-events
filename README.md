@@ -216,6 +216,53 @@ kube-system       Active        43m
 As you see the namespace is now in `Terminating` and soon everything will be
 removed!
 
+## Quota and limits for conferences
+
+Just create a resource quota!
+
+```sh
+cat <<EOF > object-counts.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: conference-object-counts
+  namespace: cloudconf2020
+spec:
+  hard:
+    "count/orders.app.corley.it": "10"
+    "count/tickets.app.corley.it": "10"
+    "count/plans.app.corley.it": "3"
+    "count/coupons.app.corley.it": "5"
+EOF
+```
+
+Now you have limits for your conference!
+
+```sh
+kubectl apply -f object-counts.yaml
+```
+
+And than check your conference namespace current situation:
+
+```sh
+kubectl describe namespace cloudconf2020
+Name:         cloudconf2020
+Labels:       <none>
+Annotations:  <none>
+Status:       Active
+
+Resource Quotas
+ Name:                        conference-object-counts
+ Resource                     Used  Hard
+ --------                     ---   ---
+ count/coupons.app.corley.it  0     5
+ count/orders.app.corley.it   1     10
+ count/plans.app.corley.it    1     3
+ count/tickets.app.corley.it  7     10
+
+No resource limits.
+```
+
 ## Expose nginx ingress (for KinD)
 
 Deploy nginx ingress
