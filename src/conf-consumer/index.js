@@ -98,6 +98,16 @@ const deploy_payment_gateway = (namespace) => {
               {
                 image: "wdalmut/conf-payment-gateway:0.0.7",
                 name: "payment-gateway",
+                resources: {
+                  requests: {
+                    memory: "128Mi",
+                    cpu: "128m",
+                  },
+                  limits: {
+                    memory: "128Mi",
+                    cpu: "128m",
+                  }
+                }
               }
             ],
           }

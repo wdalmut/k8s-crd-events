@@ -27,4 +27,10 @@ spec:
             value: 'update-order'
           - name: DELETE_QUEUE_NAME
             value: 'delete-order'
-
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "128m"
+          limits:
+            memory: "128Mi"
+            cpu: "128m"

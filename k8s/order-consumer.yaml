@@ -25,5 +25,12 @@ spec:
             value: 'add-order'
           - name: ADD_PROCESSING_QUEUE_NAME
             value: 'processing-add-order'
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "128m"
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
 
 

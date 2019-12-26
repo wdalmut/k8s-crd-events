@@ -25,6 +25,10 @@ spec:
             value: 'update-order'
           - name: UPDATE_PROCESSING_QUEUE_NAME
             value: 'processing-update-order'
-
-
-
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "128m"
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
