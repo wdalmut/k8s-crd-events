@@ -7,6 +7,8 @@ conference is created or updated/delete a shared informer push the event in a
 message queue where a controller deploy a dedicated K8S namespace with the
 application deploy.
 
+ > Road to CloudConf2020? Check it out: https://cloudconf.it
+
 ## Getting started
 
 Create the cluster
@@ -18,8 +20,10 @@ kind create cluster --config kind.yaml
 Start development
 
 ```sh
-skaffold dev
+skaffold run
 ```
+
+## Play with conferences!
 
 Check existing conferences
 
@@ -187,7 +191,32 @@ curl -XPOST -d 'custom=order-1&payment_status=Completed&mc_gross=29.90&mc_curren
 If you check the order event list now you will see the payment confirmation
 event and then the tickets will be created.
 
-### Expose nginx ingress (for KinD)
+## Delete a conference
+
+If you want to drop out everything about a conference, just drop the
+`conference` element
+
+```sh
+kubectl delete conference CloudConf2020
+```
+
+And checkout your namespaces:
+
+```sh
+NAME              STATUS        AGE
+cloudconf2020     Terminating   15m
+default           Active        43m
+ingress-nginx     Active        32m
+kconference       Active        19m
+kube-node-lease   Active        43m
+kube-public       Active        43m
+kube-system       Active        43m
+```
+
+As you see the namespace is now in `Terminating` and soon everything will be
+removed!
+
+## Expose nginx ingress (for KinD)
 
 Deploy nginx ingress
 
