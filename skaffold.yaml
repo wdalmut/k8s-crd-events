@@ -32,8 +32,8 @@ build:
     context: src/order-consumer-del
     docker:
       dockerfile: Dockerfile
-  - image: wdalmut/conf-payment-gateway-paypal
-    context: src/payment-gateway-paypal
+  - image: wdalmut/conf-payment-informer
+    context: src/payment-informer
     docker:
       dockerfile: Dockerfile
 deploy:

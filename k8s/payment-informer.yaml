@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-informer
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: payment-informer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: payment-informer
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: payment-informer-service-account
+      containers:
+      - name: payment-informer
+        image: wdalmut/conf-payment-informer
+        env:
+          - name: REDIS_HOST
+            value: "queue-service"
+          - name: ADD_QUEUE_NAME
+            value: 'add-payment'
+
