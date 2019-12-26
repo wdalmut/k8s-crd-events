@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-consumer
+  namespace: kconference
+spec:
+  selector:
+    matchLabels:
+      app: payment-consumer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: payment-consumer
+    spec:
+      terminationGracePeriodSeconds: 0
+      serviceAccountName: payment-consumer-service-account
+      containers:
+      - name: payment-consumer
+        image: wdalmut/conf-payment-consumer
+        env:
+          - name: REDIS_HOST
+            value: "queue-service"
+          - name: ADD_QUEUE_NAME
+            value: 'add-payment'
+          - name: ADD_PROCESSING_QUEUE_NAME
+            value: 'processing-add-payment'
+
+

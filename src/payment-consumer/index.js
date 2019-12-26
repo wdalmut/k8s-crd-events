@@ -10,26 +10,22 @@ kc.loadFromDefault()
 
 const k8sApi = kc.makeApiClient(k8s.CustomObjectsApi)
 
-const create_status_section = ({name, resourceVersion, namespace}) => {
-  return k8sApi.replaceNamespacedCustomObjectStatus(
+const set_as_confirmed = ({name, namespace}, regarding) => {
+  console.log(regarding.name)
+  return k8sApi.patchNamespacedCustomObjectStatus(
     "app.corley.it",
     "v1",
     namespace,
     "orders",
-    name,
+    regarding.name,
+    [
+      { "op": "replace", "path": "/status/payment", "value": "CONFIRMED" },
+    ],
     {
-      apiVersion: 'app.corley.it/v1',
-      kind: "Order",
-      metadata: {
-        name,
-        resourceVersion,
-      },
-      status: {
-        payment: "PENDING",
-        quantity: 0,
-        labelSelector: name
+      headers: {
+        "content-type": "application/json-patch+json"
       }
-    },
+    }
   )
 }
 
@@ -47,9 +43,9 @@ const create_status_section = ({name, resourceVersion, namespace}) => {
     let metadata = data.metadata
 
     let id = metadata.name
-    data = data.spec
+    let regarding = data.regarding
 
-    create_status_section(metadata)
+    set_as_confirmed(metadata, regarding)
       .then(_ => client.lremAsync(process.env.ADD_PROCESSING_QUEUE_NAME, 0, key))
       .then(() => console.log(`Setup completed for order: ${id}`))
       .catch(err => console.error(err))
